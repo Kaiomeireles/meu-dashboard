@@ -6,10 +6,10 @@ import seaborn as sns
 import altair as alt
 import matplotlib.pyplot as plt
 
-# Títulos e informações iniciais
+
 st.set_page_config(page_title="Dashboard Profissional", page_icon=":bar_chart:", layout="wide")
 
-# Aplicando tema customizado com markdown (azul mais escuro)
+
 st.markdown("""
     <style>
     .stApp {
@@ -28,7 +28,7 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Função para carregar o conjunto de dados (aqui um dataset fictício)
+
 def load_data():
     np.random.seed(0)
     data = {
@@ -41,10 +41,10 @@ def load_data():
     df = pd.DataFrame(data)
     return df
 
-# Carregar dados
+
 df = load_data()
 
-# Home: Introdução Pessoal
+
 def home():
     st.title("Dashboard Profissional - Kaio Meireles")
     st.header("Objetivo Profissional")
@@ -53,7 +53,7 @@ def home():
         Ficar longe dos perigos noturnos. <3
     """)
     st.subheader("Minha Foto")
-    st.image("Image.jpg", caption="Kaio Meireles", use_container_width=True)  # Substitua pelo link da sua foto ou arquivo local
+    st.image("Image.jpg", caption="Kaio Meireles", use_container_width=True) 
     st.header("Objetivo Profissional")
     st.write("""
         Sou Kaio Meireles, um estudante de Engenharia de Software apaixonado por TI e pela inovação constante que o campo oferece. 
@@ -69,7 +69,7 @@ def home():
         
         Explore as seções para saber mais sobre o meu perfil e veja como a análise de dados pode ser uma ferramenta poderosa na solução de problemas complexos no mercado de TI!
     """)
-# Formação e Experiência
+
 def formacao_experiencia():
     st.header("Formação e Experiência")
     st.write("Formação Acadêmica:")
@@ -82,7 +82,7 @@ def formacao_experiencia():
     st.write("Certificações:")
     st.write("- Não possui certificações específicas no momento")
 
-# Skills
+
 def skills():
     st.header("Skills")
     st.write("Tecnologias e Ferramentas:")
@@ -95,55 +95,55 @@ def skills():
     st.write("- Adaptabilidade ao ambiente remoto e home office")
     st.write("- Organização e gestão de tempo")
 
-# Análise de Dados
+
 def analise_dados():
     st.header("Análise de Dados")
 
-    # Apresentação dos dados e tipos de variáveis
+    
     st.subheader("Visão geral dos dados")
     st.write(df)
 
-    # Análise Descritiva
+    
     st.subheader("Estatísticas Descritivas")
     st.write(df.describe())
 
-    # Análise de Dispersão e Correlação
+    
     st.subheader("Correlação entre variáveis")
     corr = df[['Idade', 'Salário', 'Experiência']].corr()
     st.write(corr)
 
-    # Gráfico de correlação
-    fig, ax = plt.subplots()  # Criando a figura e os eixos
-    sns.heatmap(corr, annot=True, cmap="coolwarm", center=0, ax=ax)  # Passando ax para o gráfico
-    st.pyplot(fig)  # Agora, chamamos st.pyplot(fig) passando explicitamente a figura
+    
+    fig, ax = plt.subplots()  
+    sns.heatmap(corr, annot=True, cmap="coolwarm", center=0, ax=ax)  
+    st.pyplot(fig)  
 
-    # Análise de Distribuições
+    
     st.subheader("Distribuição do Salário")
     fig = px.histogram(df, x="Salário", nbins=10, title="Distribuição do Salário")
     st.plotly_chart(fig)
 
-    # Aplicação de Distribuições Probabilísticas
+   
 
-    # Distribuição Normal (Salário)
+    
     st.subheader("Distribuição Normal - Salário")
     mean = np.mean(df['Salário'])
     std_dev = np.std(df['Salário'])
     st.write(f"Média do Salário: {mean:.2f}, Desvio Padrão: {std_dev:.2f}")
-    fig, ax = plt.subplots()  # Criando a figura e os eixos
-    sns.histplot(df['Salário'], kde=True, ax=ax)  # Passando ax para o gráfico
-    st.pyplot(fig)  # Passando a figura explicitamente
+    fig, ax = plt.subplots()  
+    sns.histplot(df['Salário'], kde=True, ax=ax)  
+    st.pyplot(fig)  
 
-    # Distribuição Poisson (Experiência)
+    
     st.subheader("Distribuição Poisson - Experiência")
     lambda_exp = np.mean(df['Experiência'])
     st.write(f"Lámbda para Experiência: {lambda_exp:.2f}")
     x = np.arange(0, 20)
     poisson_dist = np.random.poisson(lam=lambda_exp, size=1000)
-    fig, ax = plt.subplots()  # Criando a figura e os eixos
+    fig, ax = plt.subplots()  
     ax.hist(poisson_dist, bins=30, density=True, alpha=0.6, color='g')
-    st.pyplot(fig)  # Passando a figura explicitamente
+    st.pyplot(fig)  
 
-    # Gráfico Interativo com Altair
+    
     st.subheader("Análise Interativa de Salário por Seção")
     chart = alt.Chart(df).mark_bar().encode(
         x='Seção:N',
@@ -152,10 +152,10 @@ def analise_dados():
     ).properties(title="Média de Salário por Seção")
     st.altair_chart(chart, use_container_width=True)
 
-# Filtros interativos (filtro por Seção)
+
 def filtro_interativo():
     st.sidebar.header("Filtros Interativos")
-    # O usuário escolhe qual seção visualizar
+    
     section = st.sidebar.radio(
         "Escolha a Seção para exibir:",
         ('Home', 'Formação e Experiência', 'Skills', 'Análise de Dados')
@@ -170,14 +170,14 @@ def filtro_interativo():
     elif section == 'Análise de Dados':
         analise_dados()
 
-# Seção de Foto e Logo
+
 def foto_logo():
     st.sidebar.header("Foto e Logo")
     st.sidebar.write("Espaço para logo e foto")
-    st.sidebar.image("km.svg", caption="Sua Foto Aqui", use_container_width=True)  # Substitua pela sua foto
-    st.sidebar.write("Espaço para logo da empresa ou pessoal")  # Substitua pelo link ou caminho do logo
+    st.sidebar.image("km.svg", caption="Sua Foto Aqui", use_container_width=True)  
+    st.sidebar.write("Espaço para logo da empresa ou pessoal")  
 
-# Rodapé
+
 def rodape():
     st.markdown("""
         <footer style="text-align: center; font-size: 12px; color: gray;">
@@ -185,10 +185,10 @@ def rodape():
         </footer>
     """, unsafe_allow_html=True)
 
-# Chamada da função principal
+
 def main():
     filtro_interativo()
-    foto_logo()  # Adiciona a seção de foto e logo
+    foto_logo() 
     rodape()
 
 if __name__ == "__main__":
